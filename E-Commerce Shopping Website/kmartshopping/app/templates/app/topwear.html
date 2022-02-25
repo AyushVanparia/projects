@@ -1,27 +1,22 @@
-{% extends 'app/base.html' %}
+{% extends "app/base.html" %}
 {% load static %}
-{% block title %}Mobile{% endblock title %}
+{% block title %}Top Wear{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
     <div class="col-sm-3">
       <div class="list-group">
-        <a href="{% url 'mobile' %}" class="list-group-item list-group-item-action active" aria-current="true">
-          All Mobiles
+        <a href="{% url 'topwear' %}" class="list-group-item list-group-item-action active" aria-current="true">
+          Top Wear
         </a>
-        <a href="{% url 'mobiledata' 'Redmi' %}" class="list-group-item list-group-item-action">Redmi</a>
-        <a href="{% url 'mobiledata' 'Samsung' %}" class="list-group-item list-group-item-action">Samsung</a>
-        <a href="{% url 'mobiledata' 'OPPO' %}" class="list-group-item list-group-item-action">OPPO</a>
-        <a href="{% url 'mobiledata' 'Vivo' %}" class="list-group-item list-group-item-action">Vivo</a>
-        <a href="{% url 'mobiledata' 'realme' %}" class="list-group-item list-group-item-action">Realme</a>
-        <a href="{% url 'mobiledata' 'below' %}" class="list-group-item list-group-item-action">Below  13000</a>
-        <a href="{% url 'mobiledata' 'above' %}" class="list-group-item list-group-item-action">Above 13000</a>
+        {% comment %} <a href="{% url 'mobiledata' 'Redmi' %}" class="list-group-item list-group-item-action">Redmi</a> {% endcomment %}
+      
         {% comment %} <a class="list-group-item list-group-item-action disabled">A disabled link item</a> {% endcomment %}
       </div>
     </div>
     <div class="col-sm-8 offset-sm-1">
       <div class="row">
-        {% for product in mobiles %}
+        {% for product in topwears %}
          <div class="col-sm-4 text-center mb-4">
            <a href="{% url 'product-detail' product.id %}" class="btn">
               <div class="item">

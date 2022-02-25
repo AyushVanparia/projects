@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Laptop{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+  <div class="row">
+     <div class="col-sm-3">
+       <div class="list-group">
+         <a href="{% url 'laptop' %}" class="list-group-item list-group-item-action active" aria-current="true">
+           All Laptop
+         </a>
+         <a href="{% url 'laptopdata' 'Dell' %}" class="list-group-item list-group-item-action">Dell</a>
+         <a href="{% url 'laptopdata' 'Lenovo' %}" class="list-group-item list-group-item-action">Lenovo</a>
+         <a href="{% url 'laptopdata' 'HP' %}" class="list-group-item list-group-item-action">HP</a>
+         <a href="{% url 'laptopdata' 'ASUSj' %}" class="list-group-item list-group-item-action">Asus</a>
+         <a href="{% url 'laptopdata' 'AVITA' %}" class="list-group-item list-group-item-action">Avita</a>
+         <a href="{% url 'laptopdata' 'Acer' %}" class="list-group-item list-group-item-action">Acer</a>
+         <a href="{% url 'laptopdata' 'Redmi' %}" class="list-group-item list-group-item-action">Redmi</a>
+         <a href="{% url 'laptopdata' 'below' %}" class="list-group-item list-group-item-action"> Below 40000 </a>
+         <a href="{% url 'laptopdata' 'above' %}" class="list-group-item list-group-item-action">Above 40000</a>
+         {% comment %} <a class="list-group-item list-group-item-action disabled">A disabled link item</a> {% endcomment %}
+       </div>
+     </div>
+     <div class="col-sm-8 offset-sm-1">
+       <div class="row">
+         {% for product in laptops %}
+          <div class="col-sm-4 text-center mb-4">
+            <a href="{% url 'product-detail' product.id %}" class="btn">
+               <div class="item">
+                <img src="{{product.product_image.url }}" alt="" height="300" class="" width="300">
+                <div class="fw-bold">{{product.title}}</div>
+                 <div class="fw-bold">{{product.discounted_price}} 
+                  <small class="fw-light text-decoration-line-through">{{product.selling_price}}</small>
+                 </div>
+             </div>
+            </a>
+           </div>
+         {% endfor %}
+       </div>
+     </div>
+  </div>
+ </div>
+{% endblock main-content %}
