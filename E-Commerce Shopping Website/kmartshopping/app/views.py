@@ -3,6 +3,8 @@ from unicodedata import category, name
 from django.shortcuts import render
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced
+from .forms import CutomerRegistrationForm
+from django.contrib import messages
 
 # def home(request):
 #  return render(request, 'app/home.html')
@@ -91,12 +93,20 @@ def bottomWear(request):
     return render(request, 'app/bottomwear.html', {'bottomwears': bottomwears})
 
 
-def login(request):
-    return render(request, 'app/login.html')
 
 
-def customerregistration(request):
-    return render(request, 'app/customerregistration.html')
+
+class CustomerRegistrationView(View):
+    def get(self, request):
+        form = CutomerRegistrationForm()
+        return render(request, 'app/customerregistration.html', {'form': form})
+    def post(self, request):
+        form = CutomerRegistrationForm(request.POST)
+        if form.is_valid():
+            messages.success(request, 'Congratulations!! Registered Successfully')
+            form.save()
+        return render(request, 'app/customerregistration.html', {'form': form})
+
 
 
 def checkout(request):
