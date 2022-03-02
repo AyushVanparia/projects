@@ -1,9 +1,10 @@
+from ast import Pass
 from tkinter import N
 from unicodedata import category, name
 from django.shortcuts import render
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced
-from .forms import CutomerRegistrationForm
+from .forms import CutomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
 
 # def home(request):
@@ -19,9 +20,6 @@ class ProductView(View):
         return render(request, 'app/home.html', {'topwears': topwears, 'bottomwears': bottomwears, 'mobiles': mobiles, 'laptops': laptops})
 
 
-# def product_detail(request):
-#     return render(request, 'app/productdetail.html')
-
 class ProductDetailView(View):
     def get(self, request, pk):
         product = Product.objects.get(pk=pk)
@@ -36,20 +34,12 @@ def buy_now(request):
     return render(request, 'app/buynow.html')
 
 
-def profile(request):
-    return render(request, 'app/profile.html')
-
-
 def address(request):
     return render(request, 'app/address.html')
 
 
 def orders(request):
     return render(request, 'app/orders.html')
-
-
-def change_password(request):
-    return render(request, 'app/changepassword.html')
 
 
 def mobile(request, data=None):
@@ -83,31 +73,66 @@ def laptop(request, data=None):
     return render(request, "app/laptop.html", {'laptops': laptops})
 
 
-def topWear(request):
-    topwears = Product.objects.filter(category='TW')
+def topWear(request, data=None):
+    if data == None:
+        topwears = Product.objects.filter(category='TW')
+    elif data == 'below':
+        topwears = Product.objects.filter(
+            category='TW').filter(discounted_price__lt=500)
+    elif data == 'above':
+        topwears = Product.objects.filter(
+            category='TW').filter(discounted_price__gt=500)
+
     return render(request, 'app/topwear.html', {'topwears': topwears})
 
 
-def bottomWear(request):
-    bottomwears = Product.objects.filter(category='BW')
+def bottomWear(request, data=None):
+    if data == None:
+        bottomwears = Product.objects.filter(category='BW')
+    elif data == 'below':
+        bottomwears = Product.objects.filter(
+            category='BW').filter(discounted_price__lt=800)
+    elif data == 'above':
+        bottomwears = Product.objects.filter(
+            category='BW').filter(discounted_price__gt=800)
     return render(request, 'app/bottomwear.html', {'bottomwears': bottomwears})
-
-
-
 
 
 class CustomerRegistrationView(View):
     def get(self, request):
         form = CutomerRegistrationForm()
         return render(request, 'app/customerregistration.html', {'form': form})
+
     def post(self, request):
         form = CutomerRegistrationForm(request.POST)
         if form.is_valid():
-            messages.success(request, 'Congratulations!! Registered Successfully')
+            messages.success(
+                request, 'Congratulations!! Registered Successfully')
             form.save()
         return render(request, 'app/customerregistration.html', {'form': form})
 
 
-
 def checkout(request):
     return render(request, 'app/checkout.html')
+
+
+class ProfileView(View):
+    def get(self, request):
+        form = CustomerProfileForm()
+        return render(request, 'app/profile.html', {'form': form, 'active': 'btn-primary'})
+
+    def post(self, request):
+        form = CustomerProfileForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            name = form.cleaned_data['name']
+            locality = form.cleaned_data['locality']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            zipcode = form.cleaned_data['zipcode']
+            reg = Customer(user=user, name=name, locality=locality,
+                           city=city, state=state, zipcode=zipcode)
+            reg.save()
+            messages.success(
+                request, 'Congratulations!! Profile Updated Successfully')
+        return render(request, 'app/profile.html', {'form': form, 'active': 'btn-primary'})

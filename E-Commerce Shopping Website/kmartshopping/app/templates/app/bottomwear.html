@@ -9,6 +9,8 @@
          <a href="{% url 'bottomwear' %}" class="list-group-item list-group-item-action active" aria-current="true">
            Bottom Wears
          </a>
+         <a href="{% url 'bottomweardata' 'below' %}" class="list-group-item list-group-item-action">Below  800</a>
+         <a href="{% url 'bottomweardata' 'above' %}" class="list-group-item list-group-item-action">Above 800</a>
          {% comment %} <a href="{% url 'mobiledata' 'Redmi' %}" class="list-group-item list-group-item-action">Redmi</a> {% endcomment %}
        
          {% comment %} <a class="list-group-item list-group-item-action disabled">A disabled link item</a> {% endcomment %}
