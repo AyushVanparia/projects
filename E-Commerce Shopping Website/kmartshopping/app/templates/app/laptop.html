@@ -12,7 +12,7 @@
          <a href="{% url 'laptopdata' 'Dell' %}" class="list-group-item list-group-item-action">Dell</a>
          <a href="{% url 'laptopdata' 'Lenovo' %}" class="list-group-item list-group-item-action">Lenovo</a>
          <a href="{% url 'laptopdata' 'HP' %}" class="list-group-item list-group-item-action">HP</a>
-         <a href="{% url 'laptopdata' 'ASUSj' %}" class="list-group-item list-group-item-action">Asus</a>
+         <a href="{% url 'laptopdata' 'ASUS' %}" class="list-group-item list-group-item-action">Asus</a>
          <a href="{% url 'laptopdata' 'AVITA' %}" class="list-group-item list-group-item-action">Avita</a>
          <a href="{% url 'laptopdata' 'Acer' %}" class="list-group-item list-group-item-action">Acer</a>
          <a href="{% url 'laptopdata' 'Redmi' %}" class="list-group-item list-group-item-action">Redmi</a>
@@ -27,7 +27,7 @@
           <div class="col-sm-4 text-center mb-4">
             <a href="{% url 'product-detail' product.id %}" class="btn">
                <div class="item">
-                <img src="{{product.product_image.url }}" alt="" height="300" class="" width="300">
+                <img src="{{product.product_image.url }}" alt="" height="250" class="" width="250">
                 <div class="fw-bold">{{product.title}}</div>
                  <div class="fw-bold">{{product.discounted_price}} 
                   <small class="fw-light text-decoration-line-through">{{product.selling_price}}</small>

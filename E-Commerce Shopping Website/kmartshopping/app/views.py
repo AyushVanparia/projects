@@ -1,7 +1,7 @@
 from ast import Pass
 from tkinter import N
 from unicodedata import category, name
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced
 from .forms import CutomerRegistrationForm, CustomerProfileForm
@@ -27,7 +27,28 @@ class ProductDetailView(View):
 
 
 def add_to_cart(request):
-    return render(request, 'app/addtocart.html')
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    product = Product.objects.get(id=product_id)
+    Cart(user=user, product=product).save()
+    return redirect('/cart')
+
+
+def show_cart(request):
+    if request.user.is_authenticated:
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        amount = 0.0
+        shipping_amount = 70.0
+        total_amount = 0.0
+        cart_product = [p for p in Cart.objects.all() if p.user == user]
+
+        if cart_product:
+            for p in cart_product:
+                tempamount = (p.quantity * p.product.discounted_price)
+                amount += tempamount
+                totalamount = amount + shipping_amount
+        return render(request, 'app/addtocart.html', {'carts': cart, 'totalamount': totalamount, 'amount': amount})
 
 
 def buy_now(request):
@@ -35,7 +56,8 @@ def buy_now(request):
 
 
 def address(request):
-    return render(request, 'app/address.html')
+    add = Customer.objects.filter(user=request.user)
+    return render(request, 'app/address.html', {'add': add, 'active': 'btn-primary'})
 
 
 def orders(request):
