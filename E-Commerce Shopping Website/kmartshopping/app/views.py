@@ -278,7 +278,5 @@ class ProfileView(View):
         return render(request, 'app/profile.html', {'form': form, 'active': 'btn-primary'})
 
 
-# def cartcount(request):
-#     user = request.user
-#     count = 0
+
 
