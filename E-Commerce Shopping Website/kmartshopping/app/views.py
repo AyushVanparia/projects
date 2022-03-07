@@ -29,8 +29,9 @@ class ProductDetailView(View):
     def get(self, request, pk):
         product = Product.objects.get(pk=pk)
         item_already_in_cart = False
-        item_already_in_cart = Cart.objects.filter(
-            Q(product=product.id) & Q(user=request.user)).exists()
+        if request.user.is_authenticated:
+            item_already_in_cart = Cart.objects.filter(
+                Q(product=product.id) & Q(user=request.user)).exists()
         return render(request, 'app/productdetail.html', {'product': product, 'item_already_in_cart': item_already_in_cart})
 
 
@@ -41,6 +42,20 @@ def add_to_cart(request):
     product = Product.objects.get(id=product_id)
     Cart(user=user, product=product).save()
     return redirect('/cart')
+
+
+@login_required
+def buy_now(request):
+    user = request.user
+    buynow_id = request.GET.get('buynow_id')
+    item_already_in_cart = Cart.objects.filter(
+        Q(product=buynow_id) & Q(user=request.user)).exists()
+    if item_already_in_cart:
+        return redirect('/checkout')
+    else:
+        product = Product.objects.get(id=buynow_id)
+        Cart(user=user, product=product).save()
+        return redirect('/checkout')
 
 
 @login_required
@@ -125,10 +140,6 @@ def remove_cart(request):
             'totalamount': amount + shipping_amount
         }
         return JsonResponse(data)
-
-
-def buy_now(request):
-    return render(request, 'app/buynow.html')
 
 
 @login_required
@@ -265,3 +276,9 @@ class ProfileView(View):
             messages.success(
                 request, 'Congratulations!! Profile Updated Successfully')
         return render(request, 'app/profile.html', {'form': form, 'active': 'btn-primary'})
+
+
+# def cartcount(request):
+#     user = request.user
+#     count = 0
+

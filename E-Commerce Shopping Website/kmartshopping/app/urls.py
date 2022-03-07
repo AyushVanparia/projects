@@ -21,7 +21,7 @@ urlpatterns = [
 
 
 
-    path('buy/', views.buy_now, name='buy-now'),
+    path('buy-now/', views.buy_now, name='buy-now'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('address/', views.address, name='address'),
     path('orders/', views.orders, name='orders'),
